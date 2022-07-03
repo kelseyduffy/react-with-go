@@ -1,2 +1,2 @@
 # react-with-go
-code while following along with Udemy course
+Code from following along with [Working with React and Go](https://www.udemy.com/course/working-with-react-and-go-golang) on Udemy
