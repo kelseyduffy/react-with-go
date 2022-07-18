@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 
 export default class AppContent extends Component {
 
+    constructor(props) {
+        super(props);
+        this.listRef = React.createRef();
+    }
+
     anotherFunction = () => {
         console.log("another function");
     }
@@ -17,7 +22,8 @@ export default class AppContent extends Component {
             .then((response) => response.json())
             .then(json => {
                 console.log(json);
-                let posts = document.getElementById("post-list");
+                //let posts = document.getElementById("post-list");
+                const posts = this.listRef.current;
 
                 json.forEach(function(obj) {
                     let li = document.createElement("li");
@@ -41,7 +47,7 @@ export default class AppContent extends Component {
             
                 <hr />
 
-                <ul id="post-list"></ul>
+                <ul id="post-list" ref={this.listRef}></ul>
             </p>
         );
     }
