@@ -11,15 +11,20 @@ import './index.css';
 class App extends Component {
 
   render() {
+    const myProps = {
+      title: "my cool app",
+      subject: "my subject",
+      favorite_color: "blue"
+    }
+
     return (
       <div className="app">
-        <AppHeader title="Cool App"/>
+        <AppHeader {...myProps} />
         <AppContent />
         <AppFooter />
       </div>
     );
   }
 }
-
 
 ReactDOM.render(<App />, document.getElementById('root'));
