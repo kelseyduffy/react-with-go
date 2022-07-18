@@ -2,23 +2,23 @@ import React, { Component } from 'react';
 
 export default class AppContent extends Component {
 
+    constructor(props) {
+        super(props);
+        this.handlePostChange = this.handlePostChange.bind(this);
+    }
+
+    handlePostChange(posts) {
+        this.props.handlePostChange(posts);
+    }
+
     state = {posts: []};
 
-    anotherFunction = () => {
-        console.log("another function");
-    }
-
-    leftParagraph = () => {
-        console.log("left the paragraph");
-    }
-
     fetchList = () => {
-        //console.log("I was clicked.");
-
         fetch('https://jsonplaceholder.typicode.com/posts')
             .then((response) => response.json())
             .then(json => {
                 this.setState({posts: json});
+                this.handlePostChange(json);
             })
     }
 
@@ -33,8 +33,6 @@ export default class AppContent extends Component {
                 
                 <br />
                 <hr />
-
-                <p onMouseEnter={this.anotherFunction} onMouseLeave={this.leftParagraph}>This is some text</p>
 
                 <button onClick={this.fetchList} className="btn btn-primary">Fetch Data</button>
             
