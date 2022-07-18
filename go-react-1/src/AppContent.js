@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 
 export default class AppContent extends Component {
 
+    anotherFunction = () => {
+        console.log("another function");
+    }
+
+    leftParagraph = () => {
+        console.log("left the paragraph");
+    }
+
     fetchList = () => {
         //console.log("I was clicked.");
 
@@ -25,6 +33,10 @@ export default class AppContent extends Component {
                 This is the content.
                 
                 <br />
+                <hr />
+
+                <p onMouseEnter={this.anotherFunction} onMouseLeave={this.leftParagraph}>This is some text</p>
+
                 <button onClick={this.fetchList} className="btn btn-primary">Fetch Data</button>
             
                 <hr />
