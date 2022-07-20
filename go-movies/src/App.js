@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link, useParams, useRouteMatch } from 'react-router-dom';
+import Categories from './components/Categories';
 import Movies from './components/Movies';
 import Home from './components/Home';
 import Admin from './components/Admin';
@@ -26,6 +27,9 @@ export default function App() {
                   <Link to="/movies">Movies</Link>
                 </li>
                 <li className="list-group-item">
+                  <Link to="/by-category">Movies by Category</Link>
+                </li>
+                <li className="list-group-item">
                   <Link to="/admin">Manage Catalog</Link>
                 </li>
               </ul>
@@ -40,6 +44,22 @@ export default function App() {
               <Route path="/movies">
                 <Movies />
               </Route>
+              <Route exact path="/by-category">
+                <CategoryPage />
+              </Route>
+
+              <Route
+              exact
+              path="/by-category/Drama"
+              render={(props) => <Categories {...props} title={`Drama`} />}
+              />
+
+              <Route
+              exact
+              path="/by-category/Comedy"
+              render={(props) => <Categories {...props} title={`Comedy`} />}
+              />
+
               <Route path="/admin">
                 <Admin />
               </Route>
@@ -58,4 +78,20 @@ function Movie() {
   let { id } = useParams();
 
   return <h2>Movie id {id}</h2>
+}
+
+function CategoryPage() {
+  
+  let { path, url } = useRouteMatch();
+  
+  return (
+    <div>
+      <h2>Categories</h2>
+
+      <ul>
+        <li><Link to={`${path}/drama`}>Drama</Link> </li>
+        <li><Link to={`${url}/comedy`}>Comedy</Link> </li>
+      </ul>
+    </div>
+  );
 }
