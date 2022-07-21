@@ -11,7 +11,7 @@ export default class Movies extends Component {
 
     // Executed after the component is rendered to the screen
     componentDidMount() {
-        fetch("http://localhost:4000/v1/moviesx")
+        fetch("http://localhost:4000/v1/movies")
             // .then((response) => response.json())
             .then((response) => {
                 console.log("status code is", response.status);
@@ -49,7 +49,7 @@ export default class Movies extends Component {
                     <h2>Choose a movie</h2>
 
                     <ul>
-                        { this.state.movies.map( (m) => (
+                        { movies.map( (m) => (
                             <li key={m.id}>
                                 <Link to= {`/movies/${m.id}`}>{m.title}</Link>
                             </li>
