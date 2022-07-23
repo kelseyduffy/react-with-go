@@ -7,12 +7,6 @@ import Select from './form-components/Select';
 
 export default class EditMovie extends Component {
 
-    state = {
-        movie: {},
-        isLoaded: false,
-        error: null,
-    };
-
     constructor(props) {
         super(props);
         this.state = {
