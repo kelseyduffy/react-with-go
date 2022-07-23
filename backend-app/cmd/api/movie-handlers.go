@@ -117,6 +117,13 @@ func (app *application) editMovie(w http.ResponseWriter, r *http.Request) {
 
 	var movie models.Movie
 
+	if payload.ID != "0" {
+		id, _ := strconv.Atoi(payload.ID)
+		m, _ := app.models.DB.Get(id)
+		movie = *m
+		movie.UpdatedAt = time.Now()
+	}
+
 	// skipping error checking for now to save time. error checking is demo'd in the rest of the app
 	movie.ID, _ = strconv.Atoi(payload.ID)
 	movie.Title = payload.Title
@@ -131,6 +138,12 @@ func (app *application) editMovie(w http.ResponseWriter, r *http.Request) {
 
 	if movie.ID == 0 {
 		err = app.models.DB.InsertMovie(movie)
+		if err != nil {
+			app.errorJson(w, err)
+			return
+		}
+	} else {
+		err = app.models.DB.UpdateMovie(movie)
 		if err != nil {
 			app.errorJson(w, err)
 			return
