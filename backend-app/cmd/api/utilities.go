@@ -22,7 +22,17 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data interf
 	return nil
 }
 
-func (app *application) errorJson(w http.ResponseWriter, err error) {
+// using ...int makes this an optional parameter since it takes 0 or more values. not a breaking change
+func (app *application) errorJson(w http.ResponseWriter, err error, status ...int) {
+
+	// Assume status code of 400
+	statusCode := http.StatusBadRequest
+
+	// overwrite that if a status code was passed
+	if len(status) > 0 {
+		statusCode = status[0]
+	}
+
 	type jsonError struct {
 		Message string `json:"message"`
 	}
@@ -31,5 +41,5 @@ func (app *application) errorJson(w http.ResponseWriter, err error) {
 		Message: err.Error(),
 	}
 
-	app.writeJSON(w, http.StatusBadRequest, theError, "error")
+	app.writeJSON(w, statusCode, theError, "error")
 }
