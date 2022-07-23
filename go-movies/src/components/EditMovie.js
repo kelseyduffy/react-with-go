@@ -99,6 +99,7 @@ export default class EditMovie extends Component {
     }
 
     componentDidMount() {
+        console.log("JWT in EditMovie componentDidMount: ", this.props.jwt)
         const id = this.props.match.params.id;
         if (id > 0) {
             fetch("http://localhost:4000/v1/movie/" + id)
