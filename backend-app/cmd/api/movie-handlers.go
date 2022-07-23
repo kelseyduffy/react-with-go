@@ -115,8 +115,6 @@ func (app *application) editMovie(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println(payload.Title)
-
 	var movie models.Movie
 
 	// skipping error checking for now to save time. error checking is demo'd in the rest of the app
@@ -130,8 +128,6 @@ func (app *application) editMovie(w http.ResponseWriter, r *http.Request) {
 	movie.MPAARating = payload.MPAARating
 	movie.CreatedAt = time.Now()
 	movie.UpdatedAt = time.Now()
-
-	log.Println(movie.Year)
 
 	err = app.models.DB.InsertMovie(movie)
 	if err != nil {
