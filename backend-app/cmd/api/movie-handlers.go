@@ -92,8 +92,6 @@ func (app *application) getAllMoviesByGenre(w http.ResponseWriter, r *http.Reque
 
 func (app *application) deleteMovie(w http.ResponseWriter, r *http.Request) {
 	params := httprouter.ParamsFromContext(r.Context())
-	log.Println("params: ", params)
-	log.Println("id param: ", params.ByName("id"))
 
 	id, err := strconv.Atoi(params.ByName("id"))
 	if err != nil {
