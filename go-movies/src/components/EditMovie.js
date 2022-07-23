@@ -139,7 +139,7 @@ export default class EditMovie extends Component {
                             type="hidden"
                             name="id"
                             id="id"
-                            value="movie.id"
+                            value={movie.id}
                             onChange={this.handleChange}
                         />    
                         <Input 
