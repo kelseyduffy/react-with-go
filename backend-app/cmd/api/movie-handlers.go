@@ -1,12 +1,21 @@
 package main
 
 import (
+	"backend/models"
+	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/julienschmidt/httprouter"
 )
+
+type jsonResp struct {
+	OK      bool   `json:"ok"`
+	Message string `json:"message"`
+}
 
 func (app *application) getOneMovie(w http.ResponseWriter, r *http.Request) {
 	params := httprouter.ParamsFromContext(r.Context())
@@ -85,16 +94,56 @@ func (app *application) deleteMovie(w http.ResponseWriter, r *http.Request) {
 
 }
 
+type MoviePayload struct {
+	ID          string `json:"id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Year        string `json:"year"`
+	ReleaseDate string `json:"release_date"`
+	Runtime     string `json:"runtime"`
+	Rating      string `json:"rating"`
+	MPAARating  string `json:"mpaa_rating"`
+}
+
 func (app *application) editMovie(w http.ResponseWriter, r *http.Request) {
-	type jsonResp struct {
-		OK bool `json:"ok"`
+	var payload MoviePayload
+
+	err := json.NewDecoder(r.Body).Decode(&payload)
+	if err != nil {
+		log.Println(err)
+		app.errorJson(w, err)
+		return
+	}
+
+	log.Println(payload.Title)
+
+	var movie models.Movie
+
+	// skipping error checking for now to save time. error checking is demo'd in the rest of the app
+	movie.ID, _ = strconv.Atoi(payload.ID)
+	movie.Title = payload.Title
+	movie.Description = payload.Description
+	movie.ReleaseDate, _ = time.Parse("2006-01-02", payload.ReleaseDate)
+	movie.Year = movie.ReleaseDate.Year()
+	movie.Runtime, _ = strconv.Atoi(payload.Runtime)
+	movie.Rating, _ = strconv.Atoi(payload.Rating)
+	movie.MPAARating = payload.MPAARating
+	movie.CreatedAt = time.Now()
+	movie.UpdatedAt = time.Now()
+
+	log.Println(movie.Year)
+
+	err = app.models.DB.InsertMovie(movie)
+	if err != nil {
+		app.errorJson(w, err)
+		return
 	}
 
 	ok := jsonResp{
 		OK: true,
 	}
 
-	err := app.writeJSON(w, http.StatusOK, ok, "response")
+	err = app.writeJSON(w, http.StatusOK, ok, "response")
 	if err != nil {
 		app.errorJson(w, err)
 		return
